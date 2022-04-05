@@ -1,5 +1,5 @@
 import cv2, os
-haar_file = 'haarcascade_frontalface_default.xml'
+haar_file = 'haar-cascade-files-master/haarcascade_frontalface_default.xml'
 datasets = 'dataset'  
 sub_data = 'champ'     
 
@@ -9,12 +9,13 @@ if not os.path.isdir(path):
 
 (width, height) = (130, 100)
 face_cascade = cv2.CascadeClassifier(haar_file)
-webcam = cv2.VideoCapture(0)
-
+webcam = cv2.VideoCapture(1)
+# for local cemera ot works with 1
 count = 1
 while count < 31:
     print(count)
     (_, im) = webcam.read()
+    print(im)
     gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, 1.3, 4)
     for (x,y,w,h) in faces:
@@ -22,6 +23,7 @@ while count < 31:
         face = gray[y:y + h, x:x + w]
         face_resize = cv2.resize(face, (width, height))
         cv2.imwrite('%s/%s.png' % (path,count), face_resize)
+        #print(gray)
     count += 1
 	
     cv2.imshow('OpenCV', im)
